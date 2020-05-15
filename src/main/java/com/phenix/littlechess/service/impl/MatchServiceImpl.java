@@ -1,5 +1,6 @@
 package com.phenix.littlechess.service.impl;
 
+import com.phenix.littlechess.manager.ChessManager;
 import com.phenix.littlechess.sdo.ChessPiece;
 import com.phenix.littlechess.sdo.MatchState;
 import com.phenix.littlechess.sdo.OperatePlaning;
@@ -26,9 +27,9 @@ public class MatchServiceImpl implements MatchService {
     // 所有棋子数据(颜色+类型)的数值表示
     private final static ArrayList<Integer> RAW_PIECES = new ArrayList<Integer>(){
         {
-            add(0); add(1); add(1); add(1); add(1); add(1); add(2); add(2);
+            add(7); add(1); add(1); add(1); add(1); add(1); add(2); add(2);
             add(3); add(3); add(4); add(4); add(5); add(5); add(6); add(6);
-            add(10); add(11); add(11); add(11); add(11); add(11); add(12); add(12);
+            add(17); add(11); add(11); add(11); add(11); add(11); add(12); add(12);
             add(13); add(13); add(14); add(14); add(15); add(15); add(16); add(16);}
     };
 
@@ -62,6 +63,7 @@ public class MatchServiceImpl implements MatchService {
             return plan;
         }
 
+        System.out.println(ChessPieces.length + "-Offset:" + offset);
         ChessPiece curPiece = ChessPieces[offset];
         if(!curPiece.getChessFace()) {
             // NOTE: 当前棋子为反面
@@ -75,11 +77,17 @@ public class MatchServiceImpl implements MatchService {
             // 更换当前玩家
             CUR_PLAYER =  (player + 1) % 2;
             plan.setNextPlayer(CUR_PLAYER);
+            // 翻牌
             plan.setChessState(0);
             plan.setStepPieces(new ChessPiece[]{curPiece});
         } else if(curPiece.getColor() == PLAYERS[player]) {
             // NOTE: 正面+本玩家棋子, 返回待操作棋子、其位置及操作类型（移动／吃／兑）
-
+            ChessPiece[] stepPieces = ChessManager.getStepPieces(curPiece, ChessPieces);
+            // 玩家不变
+            plan.setNextPlayer(player);
+            // 选定本方棋子
+            plan.setChessState(1);
+            plan.setStepPieces(stepPieces);
         } else {
             // NOTE: 正面+对家棋子 无效操作
             plan.setChessState(-1);
@@ -109,12 +117,12 @@ public class MatchServiceImpl implements MatchService {
             ChessPieces[i].setType(PieceTypeEnum.JIANG);
             Random random = new Random(Calendar.getInstance().getTimeInMillis());
             int randomIndex = random.nextInt(rawList.size());
-            System.out.print(rawList.size() + "-" + randomIndex + ":");
+            //System.out.print(rawList.size() + "-" + randomIndex + ":");
             Integer randomPiece = rawList.remove(randomIndex);
 
             ChessPieces[i].setColor(randomPiece/10);
             ChessPieces[i].setType(randomPiece%10);
-            System.out.println(randomPiece + "::" + ChessPieces[i].toString());
+            //System.out.println(randomPiece + "::" + ChessPieces[i].toString());
         }
     }
 }

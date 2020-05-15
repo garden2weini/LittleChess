@@ -12,6 +12,21 @@ public class ChessPiece {
      * 棋子颜色：1-red, 0-black
      */
     private Integer color;
+    /**
+     * 附加其上的被动操作
+     * TODO：暂时放到此处，待优化
+     */
+    private EffectedActionEnum effectedAction;
+    /**
+     * 棋子类型：将-士-象-马-车-pao-zu
+     */
+    private PieceTypeEnum type;
+
+
+    /**
+     * 棋子正反，true-正 false-反
+     */
+    private Boolean chessFace = false;
 
     public Boolean getChessFace() {
         return chessFace;
@@ -20,11 +35,6 @@ public class ChessPiece {
     public void setChessFace(Boolean chessFace) {
         this.chessFace = chessFace;
     }
-
-    /**
-     * 棋子正反，true-正 false-反
-     */
-    private Boolean chessFace = false;
 
     public PieceTypeEnum getType() {
         return type;
@@ -36,16 +46,6 @@ public class ChessPiece {
     public void setType(Integer type) {
         this.type = PieceTypeEnum.getPieceTypeEnumbyType(type);
     }
-
-    /**
-     * 棋子类型：将-士-象-马-车-pao-zu
-     */
-    private PieceTypeEnum type;
-    /**
-     * 附加其上的被动操作
-     * TODO：暂时放到此处，待优化
-     */
-    private EffectedActionEnum effectedAction;
 
     public Integer getOffset() {
         return offset;

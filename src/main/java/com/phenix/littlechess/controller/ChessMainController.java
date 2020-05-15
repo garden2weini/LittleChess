@@ -5,6 +5,7 @@ import com.phenix.littlechess.sdo.OperatePlaning;
 import com.phenix.littlechess.sdo.Result;
 import com.phenix.littlechess.service.MatchService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -14,8 +15,10 @@ import javax.inject.Inject;
 public class ChessMainController {
     @Inject
     private MatchService matchService;
+
     /**
      * 选择棋子
+     *
      * @param player 游戏玩家ID
      * @param offset 选择棋子的盘棋位置（4*8） 0-31
      * @return 新操作玩家ID，选择结果（0翻牌／1选定本方正棋子／-1忽略对方正棋子）；0时返回棋子颜色和内容；1时返回待操作位置及操作类型（移动／吃／兑）；-1时无
@@ -25,6 +28,7 @@ public class ChessMainController {
     public Result<OperatePlaning> selectChess(Integer player, Integer offset) {
         Result<OperatePlaning> result = new Result();
         result.setErrCode(0);
+        System.out.println("Player:" + player + ". Offset:" + offset);
         result.setData(matchService.selectChess(player, offset));
 
         return result;
@@ -32,9 +36,10 @@ public class ChessMainController {
 
     /**
      * 棋子操作（对选定棋子进行移动／兑／吃三种操作）
+     *
      * @param playerID 操作玩家ID
-     * @param offset1 选定棋子位置
-     * @param offset2 待操作棋子位置
+     * @param offset1  选定棋子位置
+     * @param offset2  待操作棋子位置
      * @return 新操作玩家ID，选定棋子的新位置（兑时可空）；输赢判定结果
      * 说明：操作完成时，游戏双方轮换（ko除外）
      */
