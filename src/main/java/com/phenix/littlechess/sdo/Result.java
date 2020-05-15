@@ -5,16 +5,6 @@ public class Result<T> extends BaseDO {
     private String errMsg;
     private boolean success;
     private T data;
-    // 下一次操作的玩家ID
-    private Integer nextPlayer;
-
-    public Integer getNextPlayer() {
-        return nextPlayer;
-    }
-
-    public void setNextPlayer(Integer nextPlayer) {
-        this.nextPlayer = nextPlayer;
-    }
 
     public Integer getErrCode() {
         return errCode;

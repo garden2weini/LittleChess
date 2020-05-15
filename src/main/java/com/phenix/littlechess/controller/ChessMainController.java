@@ -1,14 +1,19 @@
 package com.phenix.littlechess.controller;
 
 import com.phenix.littlechess.sdo.ChessPiece;
+import com.phenix.littlechess.sdo.OperatePlaning;
 import com.phenix.littlechess.sdo.Result;
+import com.phenix.littlechess.service.MatchService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.inject.Inject;
 
 @RestController
 @RequestMapping("/chess")
 public class ChessMainController {
-
+    @Inject
+    private MatchService matchService;
     /**
      * 选择棋子
      * @param player 游戏玩家ID
@@ -17,9 +22,10 @@ public class ChessMainController {
      * 说明：0时 游戏双方轮换
      */
     @RequestMapping(value = "/select", produces = "application/json")
-    public Result<ChessPiece[]> selectChess(Integer player, Integer offset) {
-        Result<ChessPiece[]> result = new Result();
+    public Result<OperatePlaning> selectChess(Integer player, Integer offset) {
+        Result<OperatePlaning> result = new Result();
         result.setErrCode(0);
+        result.setData(matchService.selectChess(player, offset));
 
         return result;
     }

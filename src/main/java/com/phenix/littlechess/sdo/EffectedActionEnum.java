@@ -3,7 +3,7 @@ package com.phenix.littlechess.sdo;
 /**
  * 对棋子的（被动）操作
  */
-public enum EffectedAction {
+public enum EffectedActionEnum {
     MOVE("移动", 1),
     SWALLOW("吃", 2),
     DRAW("兑", 3),
@@ -14,7 +14,7 @@ public enum EffectedAction {
     private int index;
 
     // 构造方法
-    private EffectedAction(String name, int index) {
+    EffectedActionEnum(String name, int index) {
         this.name = name; this.index = index;
     }
     //覆盖方法
