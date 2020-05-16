@@ -46,12 +46,17 @@
     - 阶段成果：梳理游戏模型（README）
  - day2：
     - 用时：4-5小时
-    - 阶段成果：实现"选择棋子"接口主要逻辑，待UAT验证
+    - 阶段成果：实现"选择棋子"接口主要逻辑，待单测验证
  - day3：
     - 用时：N小时
-    - 阶段成果：。。。
+    - 阶段成果：UnitTest准备
     
 ## 备注
 mvn spring-boot:run -Drun.arguments="--server.port=8080"
-curl -l http://localhost:8080/chess/select?player=1\&offset=3
+mvn -Dtest=ChessMainControllerTests test
+
+# curl -l http://localhost:8080/chess/{player}/select/{offset}
+curl -l http://localhost:8080/chess/1/select/3
+#curl -l http://localhost:8080/chess/select?player=1\&offset=3
 curl -l http://localhost:8080/chess/step
+

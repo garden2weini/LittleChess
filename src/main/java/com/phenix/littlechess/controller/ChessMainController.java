@@ -4,8 +4,8 @@ import com.phenix.littlechess.sdo.ChessPiece;
 import com.phenix.littlechess.sdo.OperatePlaning;
 import com.phenix.littlechess.sdo.Result;
 import com.phenix.littlechess.service.MatchService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -32,6 +32,11 @@ public class ChessMainController {
         result.setData(matchService.selectChess(player, offset));
 
         return result;
+    }
+
+    @RequestMapping(value = "/{player}/select/{offset}")
+    public Result<OperatePlaning> selectChess1(@PathVariable(value = "player")Integer player, @PathVariable(value = "offset")Integer offset) {
+        return selectChess(player, offset);
     }
 
     /**

@@ -1,6 +1,9 @@
 package com.phenix.littlechess.sdo;
 
 public class Result<T> extends BaseDO {
+
+    private static final long serialVersionUID = 4094483960602557135L;
+
     private Integer errCode;
     private String errMsg;
     private boolean success;
