@@ -1,12 +1,8 @@
 package com.phenix.littlechess.controller;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phenix.littlechess.sdo.OperatePlaning;
 import com.phenix.littlechess.sdo.Result;
-import net.bytebuddy.description.method.MethodDescription;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -14,9 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -30,10 +23,33 @@ public class ChessMainControllerTests extends AbstractTest {
         super.setUp();
     }
 
+    /**
+     * 测试选择棋盘某个棋子的响应结果
+     * @throws Exception
+     */
     @Test
     public void selectChess() throws Exception{
-        String uri = "/chess/1/select/3";
+        String uri;
+        uri = "/chess/1/select/32";
+        // Step0: 棋子Index（0-31）选择错误
+        Result<OperatePlaning> result = this.getSelectResult(uri);
+        assertTrue(result.getErrCode()!= 0);
+
+        // Step1: 首次翻牌
+        uri = "/chess/1/select/3";
         //uri = "/chess/select?player=1&offset=3";
+        result = this.getSelectResult(uri);
+        assertTrue(result.getErrCode()== 0);
+        OperatePlaning plan = result.getData();
+        // 确认是翻牌 且 offset=3的牌为已翻
+        assertTrue(plan.getChessState() == 0);
+        assertTrue(plan.getNowAllPieces()[3].getChessFace());
+        // 玩家已经转换（ID改为0）
+        assertTrue(plan.getNextPlayer() == 0);
+        //TODO 按游戏逻辑实现测试用例
+    }
+
+    private Result<OperatePlaning> getSelectResult(String uri) throws Exception {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -42,20 +58,15 @@ public class ChessMainControllerTests extends AbstractTest {
 
         String content = mvcResult.getResponse().getContentAsString();
         System.out.println(content);
-        //Result result = super.mapFromJson(content, Result.class);
-        Result<OperatePlaning> result = mapFromJsonX(content);
-        // TODO 按游戏逻辑实现测试用例
+
+        // NOTE 期望通过Class<Result<T>>对象传参，暂时使用TypeReference
+        Result<OperatePlaning> tmp = new Result<OperatePlaning>();
+        TypeReference typeReference = new TypeReference<Result<OperatePlaning>>(){};
+        Result<OperatePlaning> result = this.mapFromJsonX(content, typeReference);
+
         OperatePlaning data = result.getData();
         System.out.println(data);
-        assertTrue(result.getErrCode()== 0);
 
-    }
-
-    protected Result<OperatePlaning> mapFromJsonX(String json)
-            throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        //Type jsonType = new TypeToken<BaseResponseBean<LoginUser>>() {}.getType();
-        return objectMapper.readValue(json, new TypeReference<Result<OperatePlaning>>(){});
-
+        return result;
     }
 }

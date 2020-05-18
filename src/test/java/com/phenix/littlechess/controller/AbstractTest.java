@@ -2,9 +2,10 @@ package com.phenix.littlechess.controller;
 
 import java.io.IOException;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.phenix.littlechess.LittleChessApplication;
 import com.phenix.littlechess.sdo.Result;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,5 +40,19 @@ public class AbstractTest {
             throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(json, clazz);
+    }
+
+    protected <T> Result<T> mapFromJsonX(String json, Class<Result<T>> clazz)
+            throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, clazz);
+
+    }
+
+    protected <T> Result<T> mapFromJsonX(String json, TypeReference clazz)
+            throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return JSON.parseObject(json, clazz.getType());
+
     }
 }

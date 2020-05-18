@@ -27,6 +27,10 @@ public class ChessMainController {
     @RequestMapping(value = "/select", produces = "application/json")
     public Result<OperatePlaning> selectChess(Integer player, Integer offset) {
         Result<OperatePlaning> result = new Result();
+        if(offset<0 || offset>31) {
+            result.setErrCode(1);
+            return result;
+        }
         result.setErrCode(0);
         System.out.println("Player:" + player + ". Offset:" + offset);
         result.setData(matchService.selectChess(player, offset));

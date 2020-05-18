@@ -34,7 +34,7 @@
 1. 建立游戏模型
 1. 实现后端服务接口（SpringBoot REST），可通过接口进行游戏（仅一对一）
 1. 完善接口数据容错及提示
-1. 如可能，持续完善单元测试
+1. （如可能）整理测试用例，并持续完善单元测试
 1. 实现前端界面（Vue）及事件，并对接服务接口
 1. 前后端联调并完善逻辑
 1. 进行游戏模型优化，并调整实现
@@ -48,15 +48,16 @@
     - 用时：4-5小时
     - 阶段成果：实现"选择棋子"接口主要逻辑，待单测验证
  - day3：
-    - 用时：N小时
-    - 阶段成果：UnitTest准备
+    - 用时：2-3小时
+    - 阶段成果：UnitTest准备，增加部分测试用例
     
 ## 备注
+~~~
 mvn spring-boot:run -Drun.arguments="--server.port=8080"
 mvn -Dtest=ChessMainControllerTests test
 
+# curl -l http://localhost:8080/chess/select?player=1\&offset=3
 # curl -l http://localhost:8080/chess/{player}/select/{offset}
 curl -l http://localhost:8080/chess/1/select/3
-#curl -l http://localhost:8080/chess/select?player=1\&offset=3
 curl -l http://localhost:8080/chess/step
-
+~~~
