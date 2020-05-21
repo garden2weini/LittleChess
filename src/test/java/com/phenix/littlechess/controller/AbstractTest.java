@@ -1,10 +1,13 @@
 package com.phenix.littlechess.controller;
 
-import java.io.IOException;
-
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phenix.littlechess.LittleChessApplication;
+import com.phenix.littlechess.sdo.OperatePlaning;
 import com.phenix.littlechess.sdo.Result;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = LittleChessApplication.class)
@@ -49,9 +49,9 @@ public class AbstractTest {
 
     }
 
-    protected <T> Result<T> mapFromJsonX(String json, TypeReference clazz)
+    protected <T> Result<T> mapFromJsonX(String json, TypeReference<Result<T>> clazz)
             throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper om = new ObjectMapper();
         return JSON.parseObject(json, clazz.getType());
 
     }

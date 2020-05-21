@@ -60,8 +60,8 @@ public class ChessMainControllerTests extends AbstractTest {
         System.out.println(content);
 
         // NOTE 期望通过Class<Result<T>>对象传参，暂时使用TypeReference
-        Result<OperatePlaning> tmp = new Result<OperatePlaning>();
-        TypeReference typeReference = new TypeReference<Result<OperatePlaning>>(){};
+        Result<OperatePlaning> tmp = new Result<>();
+        TypeReference<Result<OperatePlaning>> typeReference = new TypeReference<Result<OperatePlaning>>(){};
         Result<OperatePlaning> result = this.mapFromJsonX(content, typeReference);
 
         OperatePlaning data = result.getData();
